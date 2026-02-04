@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ApplicationManifest
 metadata:
   name: album-viewer
-  version: %%VERSION%%
+  version: 21669267370
 spec:
   description: Album Viewer Frontend
   type: frontend

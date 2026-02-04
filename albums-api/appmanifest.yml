@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ApplicationManifest
 metadata:
   name: albums-api
-  version: %%VERSION%%
+  version: 21669267370
 spec:
   description: Albums API Service
   type: service
