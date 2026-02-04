@@ -1,4 +1,33 @@
 ############################################
+## CONTAINER REGISTRY                     ##
+############################################
+
+resource "azurerm_container_registry" "container_registry" {
+  name                = "acr${var.environment}${data.azurerm_client_config.current.subscription_id}"
+  resource_group_name = azurerm_resource_group.resource_group.name
+  location            = azurerm_resource_group.resource_group.location
+  sku                 = "Standard"
+  
+  admin_enabled = true
+
+  tags = var.common_tags
+}
+
+############################################
+## AZURE OPEN AI                          ##
+############################################
+
+resource "azurerm_cognitive_account" "openai" {
+  name                = "openai-${var.environment}-${data.azurerm_client_config.current.subscription_id}"
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
+  kind                = "OpenAI"
+  sku_name            = "S0"
+
+  tags = var.common_tags
+}
+
+############################################
 ## DATABASE                               ##
 ############################################
 

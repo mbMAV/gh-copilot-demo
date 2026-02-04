@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ApplicationManifest
+metadata:
+  name: gh-copilot-demo
+  version: %%VERSION%%
+spec:
+  description: GitHub Copilot Demo Application
+  components:
+    - name: albums-api
+      version: %%VERSION%%
+    - name: album-viewer
+      version: %%VERSION%%

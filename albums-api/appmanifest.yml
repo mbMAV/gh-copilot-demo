@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ApplicationManifest
+metadata:
+  name: albums-api
+  version: %%VERSION%%
+spec:
+  description: Albums API Service
+  type: service
+  runtime: dotnet8
+  framework: aspnetcore

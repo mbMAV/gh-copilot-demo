@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ApplicationManifest
+metadata:
+  name: album-viewer
+  version: %%VERSION%%
+spec:
+  description: Album Viewer Frontend
+  type: frontend
+  runtime: node
+  framework: vue

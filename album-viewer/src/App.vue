@@ -16,12 +16,16 @@
         <button @click="fetchAlbums" class="retry-btn">Try Again</button>
       </div>
 
-      <div v-else class="albums-grid">
-        <AlbumCard 
-          v-for="album in albums" 
-          :key="album.id" 
-          :album="album" 
-        />
+      <div v-else>
+        <AlbumChart :albums="albums" />
+
+        <div class="albums-grid">
+          <AlbumCard
+            v-for="album in albums"
+            :key="album.id"
+            :album="album"
+          />
+        </div>
       </div>
     </main>
   </div>
@@ -31,6 +35,7 @@
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import AlbumCard from './components/AlbumCard.vue'
+import AlbumChart from './components/AlbumChart.vue'
 import type { Album } from './types/album'
 
 const albums = ref<Album[]>([])

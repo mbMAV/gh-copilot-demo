@@ -60,6 +60,44 @@ resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/container
   name: blobContainerName
 }
 
+// Container Registry
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
+  name: replace(registryName, '-', '')
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    adminUserEnabled: true
+    publicNetworkAccess: 'Enabled'
+    networkRuleBypassOptions: 'AzureServices'
+    policies: {
+      quarantinePolicy: {
+        status: 'disabled'
+      }
+      trustPolicy: {
+        type: 'Notary'
+        status: 'disabled'
+      }
+    }
+  }
+}
+
+// Azure Open AI resource
+resource openAiAccount 'Microsoft.CognitiveServices/accounts@2023-10-01-preview' = {
+  name: 'openai-${uniqueSuffix}'
+  location: location
+  kind: 'OpenAI'
+  sku: {
+    name: 'S0'
+  }
+  properties: {
+    apiProperties: {
+      statisticsEnabled: false
+    }
+  }
+}
+
 // Container Apps environment 
 resource containerAppsEnv 'Microsoft.App/managedEnvironments@2022-03-01' = {
   name: containerAppsEnvName
@@ -128,4 +166,11 @@ output env array=[
   'Environment name: ${containerAppsEnv.name}'
   'Storage account name: ${storageAccount.name}'
   'Storage container name: ${blobContainer.name}'
+  'Container Registry name: ${containerRegistry.name}'
+  'Azure Open AI name: ${openAiAccount.name}'
 ]
+
+output containerRegistryLoginServer string = containerRegistry.properties.loginServer
+output containerRegistryId string = containerRegistry.id
+output openAiEndpoint string = openAiAccount.properties.endpoint
+output openAiId string = openAiAccount.id

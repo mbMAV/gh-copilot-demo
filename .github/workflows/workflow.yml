@@ -1,0 +1,37 @@
+# GitHub Action workflow that runs on push to main branch
+# Docker build and push the album-api image to ACR
+
+
+# tag the image with the GitHub run id and push to docker hub
+
+name: Build and Push Album API Docker Image
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./albums-api
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/albums-api:latest,${{ secrets.DOCKER_HUB_USERNAME }}/albums-api:${{ github.run_id }}
+          file: ./albums-api/Dockerfile
+          build-args: |
+            DOTNET_VERSION=7.0
+            ASPNET_VERSION=7.0
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/albums-api:latest
+          cache-to: type=inline
+      - name: Verify Docker image
+        run: docker images ${{ secrets.DOCKER_HUB_USERNAME }}/albums-api
+      
